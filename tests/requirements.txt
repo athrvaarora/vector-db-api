@@ -1,0 +1,6 @@
+# Test dependencies for the Vector Database API tests
+requests>=2.31.0
+colorama>=0.4.6
+psutil>=5.9.0
+pytest>=7.4.0
+pytest-asyncio>=0.21.0

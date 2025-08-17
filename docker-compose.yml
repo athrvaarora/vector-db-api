@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  vector-db:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./data:/app/data  # Persistent storage for future enhancements
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/api/v1/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend service (will be added when React app is ready)
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000/api/v1
+    depends_on:
+      - vector-db
+    restart: unless-stopped
+    profiles:
+      - frontend  # Only start with --profile frontend
+
+volumes:
+  data:
+    driver: local
