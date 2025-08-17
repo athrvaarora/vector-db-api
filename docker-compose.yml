@@ -7,6 +7,9 @@ services:
       - "8000:8000"
     environment:
       - PYTHONPATH=/app
+      - COHERE_API_KEY=${COHERE_API_KEY}
+    env_file:
+      - .env
     volumes:
       - ./data:/app/data  # Persistent storage for future enhancements
     restart: unless-stopped

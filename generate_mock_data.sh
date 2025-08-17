@@ -2,6 +2,22 @@
 
 echo "Generating Mock Data for Vector Database..."
 
+# Check if .env file exists
+if [ ! -f ".env" ]; then
+    echo "⚠️  Warning: .env file not found!"
+    echo "Please create a .env file with your Cohere API key:"
+    echo "cp .env.example .env"
+    echo "Then edit .env and add your COHERE_API_KEY"
+    echo ""
+    echo "You can get a free API key from: https://cohere.com/"
+    echo ""
+    read -p "Continue anyway? (y/N): " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        exit 1
+    fi
+fi
+
 # Check if virtual environment is activated
 if [[ "$VIRTUAL_ENV" == "" ]]; then
     echo "Activating virtual environment..."

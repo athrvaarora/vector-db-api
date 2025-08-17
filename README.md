@@ -37,17 +37,21 @@ A production-ready REST API and modern web interface for indexing and querying d
 
 ### Option 1: Docker (Recommended) 🐳
 
-**Complete setup in 3 commands:**
+**Complete setup in 4 commands:**
 
 ```bash
 # 1. Clone and navigate
 git clone <repository-url>
 cd takehome
 
-# 2. Start backend only
+# 2. Setup environment variables
+cp .env.example .env
+# Edit .env and add your COHERE_API_KEY (get free key from https://cohere.com/)
+
+# 3. Start backend only
 docker-compose up vector-db
 
-# 3. Start backend + frontend
+# 4. Start backend + frontend
 docker-compose --profile frontend up
 ```
 
@@ -80,9 +84,16 @@ docker-compose --profile frontend up
 
 **Backend:**
 ```bash
+# Setup environment
+cp .env.example .env
+# Edit .env and add your COHERE_API_KEY
+
+# Create and activate virtual environment
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
+
+# Start the server
 python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
@@ -259,10 +270,17 @@ docker-compose logs -f vector-db
 ```bash
 # Backend
 PYTHONPATH=/app
+COHERE_API_KEY=your_cohere_api_key_here
 
 # Frontend
 REACT_APP_API_URL=http://localhost:8000/api/v1
 ```
+
+### Security Notes
+- ⚠️ **Never commit your `.env` file** - it contains sensitive API keys
+- ✅ **Use `.env.example`** for sharing configuration templates
+- 🔑 **Get Cohere API key** from [https://cohere.com/](https://cohere.com/) (free tier available)
+- 🛡️ **API keys are environment variables** - no hardcoded secrets in code
 
 ## 🎯 Bonus Features Implemented
 

@@ -4,9 +4,15 @@ Following RESTful API design principles and FastAPI best practices.
 """
 from typing import List, Optional
 from uuid import UUID
+import os
+import httpx
 
 from fastapi import APIRouter, HTTPException, Query, status, Body
 from fastapi.responses import JSONResponse
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 from ..models.schemas import (
     Library, LibraryCreate, LibraryUpdate,
@@ -305,7 +311,14 @@ async def generate_embedding(request: dict) -> JSONResponse:
             detail="Text field is required"
         )
     
-    COHERE_API_KEY = "pa6sRhnVAedMVClPAwoCvC1MjHKEwjtcGSTjWRMd"
+    # Get API key from environment variables
+    COHERE_API_KEY = os.getenv("COHERE_API_KEY")
+    if not COHERE_API_KEY:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="COHERE_API_KEY environment variable not set. Please configure your API key."
+        )
+    
     COHERE_API_URL = "https://api.cohere.ai/v1/embed"
     
     try:

@@ -3,12 +3,17 @@ Generate mock data for the Vector Database with real embeddings from Cohere API.
 """
 import asyncio
 import json
+import os
 import random
 from datetime import datetime, timedelta
 from typing import List
 from uuid import uuid4
 
 import httpx
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 from app.models.schemas import (
     ChunkMetadata, ChunkCreate,
@@ -18,7 +23,13 @@ from app.models.schemas import (
 
 
 # Cohere API configuration
-COHERE_API_KEY = "pa6sRhnVAedMVClPAwoCvC1MjHKEwjtcGSTjWRMd"
+COHERE_API_KEY = os.getenv("COHERE_API_KEY")
+if not COHERE_API_KEY:
+    print("❌ Error: COHERE_API_KEY environment variable not set!")
+    print("Please create a .env file with your Cohere API key:")
+    print("COHERE_API_KEY=your_api_key_here")
+    exit(1)
+
 COHERE_API_URL = "https://api.cohere.ai/v1/embed"
 
 

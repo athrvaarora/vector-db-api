@@ -2,6 +2,18 @@
 
 echo "Starting Vector Database Backend..."
 
+# Check if .env file exists
+if [ ! -f ".env" ]; then
+    echo "⚠️  Warning: .env file not found!"
+    echo "Creating .env from template..."
+    cp .env.example .env
+    echo ""
+    echo "📝 Please edit .env and add your COHERE_API_KEY:"
+    echo "Get a free API key from: https://cohere.com/"
+    echo ""
+    read -p "Press Enter to continue after updating .env..."
+fi
+
 # Check if virtual environment exists
 if [ ! -d "venv" ]; then
     echo "Creating virtual environment..."
